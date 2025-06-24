@@ -4,6 +4,7 @@ This is the backend service for your project, built with Koa.js and TypeScript, 
 
 ## Features
 - Koa.js server with TypeScript
+- PostgreSQL integration (via `pg`)
 - Multi-stage Docker build for minimal, secure images
 - Hot-reloading in development with nodemon
 - Runs as a non-root user in production for security
@@ -22,13 +23,13 @@ npm start       # Run compiled server
 npm run dev
 ```
 
-## Docker Development (with hot-reload)
+## Docker Development (with hot-reload and PostgreSQL)
 From the project root (not inside backend!):
 ```sh
 cd /path/to/project/root
-# or if already in the root, just run:
 docker compose up --build
 ```
+This will start both the backend and a PostgreSQL database. The database is initialized with `backend/config/init.sql`.
 
 ## Production Docker Image
 Builds a minimal, secure image:
@@ -46,6 +47,7 @@ docker run -p 3000:3000 koa-backend
 - **Port already allocated:** Stop any process using port 3000 or change the port in `docker-compose.yml`.
 - **Permission denied on /app/dist:** The Docker Compose setup auto-fixes this, but if you see issues, try removing and recreating the `dist` folder.
 - **Frontend not found:** If you add a frontend, update `docker-compose.yml` and the root README.
+- **Database connection issues:** Ensure the `postgres` service is healthy and the backend uses the correct environment variables.
 
 ---
 Feel free to expand this backend with more routes, middleware, and features as needed.

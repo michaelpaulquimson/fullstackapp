@@ -1,10 +1,10 @@
 # syntax=docker/dockerfile:1.4
 
-# --- Build Stage ---
+# --- Build Stage (Development) ---
 FROM node:22.16-alpine AS build
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --omit=dev
+RUN npm install  # Install ALL dependencies for dev, including types
 COPY tsconfig.json ./
 COPY src ./src
 RUN npx tsc
