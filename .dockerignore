@@ -1,0 +1,13 @@
+# Node modules and logs
+node_modules
+dist
+npm-debug.log
+.dockerignore
+Dockerfile
+.git
+.gitignore
+.env
+*.md
+src/**/*.ts
+backend/
+frontend/

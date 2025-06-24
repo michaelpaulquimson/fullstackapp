@@ -1,0 +1,20 @@
+{
+  "name": "koa-backend",
+  "version": "1.0.0",
+  "main": "dist/app.js",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "dev": "nodemon --watch src --ext ts --exec 'npm run build && node dist/app.js'"
+  },
+  "dependencies": {
+    "koa": "^2.14.2",
+    "@koa/router": "^12.0.0",
+    "typescript": "^5.4.5",
+    "@types/koa": "^2.13.6",
+    "@types/koa__router": "^8.0.7",
+    "@types/node": "^20.11.30",
+    "nodemon": "^3.1.0"
+  }
+}
