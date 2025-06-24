@@ -12,16 +12,16 @@ export async function createUserTag(ctx: Context) {
     }
     try {
         // Check if tag already exists
-        const existing = await pool.query('SELECT id FROM user_tags WHERE $1 = ANY(user_tags.tag)', [tag]);
+        const existing = await pool.query('SELECT id FROM user_tags WHERE user_tags.tag = $1', [tag]);
         if ((existing.rowCount ?? 0) > 0) {
             ctx.status = 409;
             ctx.body = { error: 'Tag already exists' };
             return;
         }
-        // Insert the new tag as a single-element array
+        // Insert the new tag
         const result = await pool.query(
-            'INSERT INTO user_tags (user_tags.tag) VALUES ($1) RETURNING *',
-            [[tag]]
+            'INSERT INTO user_tags (tag) VALUES ($1) RETURNING *',
+            [tag]
         );
         ctx.status = 201;
         ctx.body = result.rows[0];
