@@ -7,7 +7,10 @@
     "build": "tsc",
     "start": "node dist/app.js",
     "dev": "nodemon --watch src --ext ts --exec 'npm run build && node dist/app.js'",
-    "test": "jest"
+    "test": "jest",
+    "initdb": "bash ./run-migration.sh ./config/init.sql",
+    "migrate": "bash ./run-migration.sh ./config/add_role_to_users.sql",
+    "db:setup": "npm run initdb && npm run migrate"
   },
   "dependencies": {
     "@koa/router": "^12.0.0",
