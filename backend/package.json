@@ -8,6 +8,7 @@
     "start": "node dist/app.js",
     "dev": "nodemon --watch src --ext ts --exec 'npm run build && node dist/app.js'",
     "test": "jest",
+    "test:all": "npm run test",
     "initdb": "bash ./run-migration.sh ./config/init.sql",
     "db:migrate": "bash ./run-all-migrations.sh ./migrations",
     "db:verify:all": "bash ./verify-all-tables.sh",
