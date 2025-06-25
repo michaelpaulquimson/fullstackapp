@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: us-east-1
-      ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,12 +32,18 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Build Docker image
+        env:
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
         run: |
-          docker build -t ${{ env.ECR_REPOSITORY }}:${{ steps.get_version.outputs.version }} ./backend
+          docker build -t $ECR_REPOSITORY:${{ steps.get_version.outputs.version }} ./backend
 
       - name: Push Docker image to ECR
+        env:
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
         run: |
-          docker push ${{ env.ECR_REPOSITORY }}:${{ steps.get_version.outputs.version }}
+          docker push $ECR_REPOSITORY:${{ steps.get_version.outputs.version }}
 
       - name: Output image URI
-        run: echo "Pushed image: ${{ env.ECR_REPOSITORY }}:${{ steps.get_version.outputs.version }}"
+        env:
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+        run: echo "Pushed image: $ECR_REPOSITORY:${{ steps.get_version.outputs.version }}"
