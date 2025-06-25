@@ -34,11 +34,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t $ECR_REPOSITORY:${{ steps.get_version.outputs.version }} ./backend
+          docker build -t ${{ env.ECR_REPOSITORY }}:${{ steps.get_version.outputs.version }} ./backend
 
       - name: Push Docker image to ECR
         run: |
-          docker push $ECR_REPOSITORY:${{ steps.get_version.outputs.version }}
+          docker push ${{ env.ECR_REPOSITORY }}:${{ steps.get_version.outputs.version }}
 
       - name: Output image URI
-        run: echo "Pushed image: $ECR_REPOSITORY:${{ steps.get_version.outputs.version }}"
+        run: echo "Pushed image: ${{ env.ECR_REPOSITORY }}:${{ steps.get_version.outputs.version }}"
