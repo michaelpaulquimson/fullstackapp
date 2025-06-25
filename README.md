@@ -2,14 +2,17 @@
 
 ## Structure
 
-- `backend/` — Koa.js + TypeScript backend API
+- `backend/` — Koa.js + TypeScript backend API ([see backend/README.md for details](./backend/README.md))
 - `frontend/` — (to be added) Frontend app
 
 ## Quickstart
 
 ### Local Backend Development
 
-See `backend/README.md` for full backend instructions.
+See [`backend/README.md`](./backend/README.md) for full backend instructions, including:
+- Database migrations and schema snapshotting
+- API development and testing
+- Docker and local workflows
 
 ### Docker Compose (Recommended for Multi-Service)
 
