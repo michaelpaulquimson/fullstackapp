@@ -29,21 +29,22 @@ jobs:
         id: get_version
         run: |
           VERSION=$(jq -r .version backend/package.json)
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Build Docker image
         env:
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
         run: |
-          docker build -t $ECR_REPOSITORY:${{ steps.get_version.outputs.version }} ./backend
+          docker build -t $ECR_REPOSITORY:$VERSION ./backend
 
       - name: Push Docker image to ECR
         env:
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
         run: |
-          docker push $ECR_REPOSITORY:${{ steps.get_version.outputs.version }}
+          docker push $ECR_REPOSITORY:$VERSION
 
       - name: Output image URI
         env:
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-        run: echo "Pushed image: $ECR_REPOSITORY:${{ steps.get_version.outputs.version }}"
+        run: |
+          echo "Pushed image: $ECR_REPOSITORY:$VERSION"
