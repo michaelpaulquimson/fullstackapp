@@ -44,6 +44,4 @@ jobs:
           docker push $ECR_REPOSITORY:$VERSION
 
       - name: Output image URI
-        env:
-          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
         run: echo "Pushed image: $ECR_REPOSITORY:$VERSION"
