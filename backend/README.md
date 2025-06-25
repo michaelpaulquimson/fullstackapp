@@ -5,6 +5,9 @@ This is the backend service for your project, built with Koa.js and TypeScript, 
 ## Features
 - Koa.js server with TypeScript
 - PostgreSQL integration (via `pg`)
+- Timestamped SQL migrations tracked in the database
+- Per-table and full schema snapshots after each migration
+- Environment variable configuration via `.env`
 - Multi-stage Docker build for minimal, secure images
 - Hot-reloading in development with nodemon
 - Runs as a non-root user in production for security
@@ -29,15 +32,31 @@ From the project root (not inside backend!):
 cd /path/to/project/root
 docker compose up --build
 ```
-This will start both the backend and a PostgreSQL database. The database is initialized with `backend/config/init.sql`.
+This will start both the backend and a PostgreSQL database.
 
-## Production Docker Image
-Builds a minimal, secure image:
-```sh
-cd backend
-docker build -t koa-backend .
-docker run -p 3000:3000 koa-backend
-```
+## Database Migrations
+- Add new migration files in `migrations/` with a timestamped name, e.g. `20250626_1700_add_profile_table.sql`.
+- Run all new migrations and update schema snapshots:
+  ```sh
+  npm run db:migrate
+  ```
+- After migration, per-table schemas and a full schema snapshot are in `schema/`.
+
+## Schema Validation
+- To view the structure of all tables:
+  ```sh
+  npm run db:verify:all
+  ```
+
+## API Development
+- Start the backend in development mode:
+  ```sh
+  npm run dev
+  ```
+- Run tests:
+  ```sh
+  npm test
+  ```
 
 ## Security Best Practices
 - Runs as a non-root user in production
@@ -50,4 +69,5 @@ docker run -p 3000:3000 koa-backend
 - **Database connection issues:** Ensure the `postgres` service is healthy and the backend uses the correct environment variables.
 
 ---
-Feel free to expand this backend with more routes, middleware, and features as needed.
+
+For more details, see the code and scripts in this directory.

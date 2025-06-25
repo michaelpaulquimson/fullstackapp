@@ -13,6 +13,7 @@ POSTGRES_CONTAINER=${POSTGRES_CONTAINER_NAME:-postgres}
 POSTGRES_USER=${POSTGRES_USER:-postgres}
 POSTGRES_DB=${POSTGRES_DB:-postgres}
 MIGRATIONS_DIR=${1:-./migrations}
+SCHEMA_DIR="$(dirname "$0")/schema"
 
 # Ensure migrations table exists
 INIT_MIGRATIONS_SQL="CREATE TABLE IF NOT EXISTS migrations (id SERIAL PRIMARY KEY, filename VARCHAR(255) UNIQUE NOT NULL, run_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
@@ -37,3 +38,20 @@ for FILE in $MIGRATIONS; do
     echo "Skipping already run migration: $BASENAME"
   fi
 done
+
+# Create schema directory if it doesn't exist
+mkdir -p "$SCHEMA_DIR"
+
+# Export each table's schema to its own file
+TABLES=$(docker exec -i "$POSTGRES_CONTAINER" psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -tAc "SELECT tablename FROM pg_tables WHERE schemaname = 'public'")
+for TABLE in $TABLES; do
+  SCHEMA_FILE="$SCHEMA_DIR/${TABLE}_schema.sql"
+  echo "Exporting schema for table $TABLE to $SCHEMA_FILE"
+  docker exec -i "$POSTGRES_CONTAINER" pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB" --schema-only --table=$TABLE > "$SCHEMA_FILE"
+done
+
+# Export the full schema as well
+FULL_SCHEMA_FILE="$SCHEMA_DIR/full_schema.sql"
+echo "Exporting full schema to $FULL_SCHEMA_FILE"
+docker exec -i "$POSTGRES_CONTAINER" pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB" --schema-only > "$FULL_SCHEMA_FILE"
+echo "Schema export complete."
