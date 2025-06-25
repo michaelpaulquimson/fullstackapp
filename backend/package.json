@@ -9,13 +9,16 @@
     "dev": "nodemon --watch src --ext ts --exec 'npm run build && node dist/app.js'",
     "test": "jest",
     "initdb": "bash ./run-migration.sh ./config/init.sql",
-    "migrate": "bash ./run-migration.sh ./config/add_role_to_users.sql",
-    "db:setup": "npm run initdb && npm run migrate"
+    "db:migrate": "bash ./run-all-migrations.sh ./migrations",
+    "db:verify:all": "bash ./verify-all-tables.sh",
+    "build:docker": "docker-compose down && docker-compose up --build"
   },
   "dependencies": {
     "@koa/router": "^12.0.0",
     "@types/koa": "^2.13.6",
     "@types/koa__router": "^8.0.7",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^16.5.0",
     "koa": "^2.14.2",
     "koa-bodyparser": "^4.4.1",
     "nodemon": "^3.1.0",
@@ -23,6 +26,7 @@
     "typescript": "^5.4.5"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/jest": "^29.5.14",
     "@types/koa-bodyparser": "^4.3.12",
     "@types/node": "^20.19.1",

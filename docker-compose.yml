@@ -6,19 +6,14 @@ services:
     container_name: koa-backend
     ports:
       - "3000:3000"
-    environment:
-      - NODE_ENV=development
-      - POSTGRES_HOST=postgres
-      - POSTGRES_PORT=5432
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=appdb
+    env_file:
+      - ./backend/.env
     volumes:
       - ./backend/src:/app/src
       - ./backend/tsconfig.json:/app/tsconfig.json
       - ./backend/package.json:/app/package.json
       - ./backend/dist:/app/dist
-    command: sh -c "chown -R $(id -u):$(id -g) /app/dist && npm run dev"
+    command: sh -c "npx wait-on tcp:postgres:5432 && npm run dev"
     restart: unless-stopped
     depends_on:
       - postgres
