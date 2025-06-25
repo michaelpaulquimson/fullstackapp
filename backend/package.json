@@ -1,6 +1,6 @@
 {
   "name": "koa-backend",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "dist/app.js",
   "type": "commonjs",
   "scripts": {
