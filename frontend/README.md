@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend (Next.js)
 
-## Getting Started
+This is the frontend application for the project, built with Next.js 15.
 
-First, run the development server:
+## Development
 
-```bash
+To run locally:
+
+```sh
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app will be available at [http://localhost:3000](http://localhost:3000) by default (or the port set in the `PORT` environment variable).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Docker Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The frontend is containerized and can be run with Docker Compose:
 
-## Learn More
+```sh
+docker-compose up --build
+```
 
-To learn more about Next.js, take a look at the following resources:
+- The app runs on port 3000 inside the container.
+- Docker maps host port 3001 to container port 3000.
+- Access the app at [http://localhost:3001](http://localhost:3001) on your host.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
+- `npm run dev` — Start development server (default: http://localhost:3000)
+- `npm run build` — Build for production
+- `npm start` — Start production server
+- `npm run lint` — Lint the codebase
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Environment Variables
+- `PORT` — Port for the Next.js server (default: 3000)
+- `NODE_ENV` — Set to `production` in Docker
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+- The logs inside the container will show port 3000, but you should access the app via the mapped host port (3001).
